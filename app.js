@@ -1,16 +1,22 @@
 // Sjekk at products arrayet er tilgjengelig fra data.js
-if (typeof products !== 'undefined') {
+if (typeof getProducts !== 'undefined' || typeof products !== 'undefined') {
+
+    const productList = typeof getProducts === 'function' ? getProducts() : products;
 
     // Funksjon for å generere HTML for et produktkort
     function createProductCard(product) {
         return `
             <div class="product-card">
-                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                <a href="product.html?id=${product.id}">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                </a>
                 <div class="product-info">
                     <span class="product-category">${product.category}</span>
-                    <h3 class="product-title">${product.name}</h3>
+                    <a href="product.html?id=${product.id}">
+                        <h3 class="product-title">${product.name}</h3>
+                    </a>
                     <div class="product-price">${product.price} kr</div>
-                    <button class="btn btn-primary" onclick="addToCart(${product.id})">Legg i handlekurv</button>
+                    <a href="product.html?id=${product.id}" class="btn btn-primary" style="text-align: center; display: block; margin-top: 10px;">Se produkt</a>
                 </div>
             </div>
         `;
@@ -26,7 +32,7 @@ if (typeof products !== 'undefined') {
         }
 
         // Hent de 3 første produktene
-        const featuredProducts = products.slice(0, 3);
+        const featuredProducts = productList.slice(0, 3);
 
         // Generer HTML og sett inn i containeren
         let html = '';

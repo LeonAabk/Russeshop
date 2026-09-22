@@ -1,4 +1,4 @@
-const products = [
+const defaultProducts = [
   {
     id: 1,
     name: "Premium Russegenser",
@@ -41,9 +41,25 @@ const products = [
   }
 ];
 
+function getProducts() {
+    let customProducts = [];
+    try {
+        const stored = localStorage.getItem('customProducts');
+        if (stored) {
+            customProducts = JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error("Error reading customProducts from localStorage", e);
+    }
+    return [...defaultProducts, ...customProducts];
+}
+
+const products = getProducts();
+
 // Exporting the products array to be used in other files
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { products };
+  module.exports = { products, getProducts, defaultProducts };
 } else {
   window.products = products;
+  window.getProducts = getProducts;
 }
