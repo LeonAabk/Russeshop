@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Russemerch</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bruker FontAwesome for ikoner -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo">RUSSEMERCH.NO</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Hjem</a></li>
+                    <li><a href="shop.html">Kolleksjon</a></li>
+                    <li><a href="#">Om Oss</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="cart">
+                <a href="#" onclick="openCart(); return false;">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Handlekurv Overlay -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Din Handlekurv</h2>
+                <button class="close-cart" onclick="closeCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Produkter injiseres her -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Totalt:</span>
+                    <span id="cart-total-price">0 kr</span>
+                </div>
+                <button class="btn btn-primary btn-checkout">Gå til kasse</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero container">
+            <h1>Premium Streetwear for Russen</h1>
+            <p>Vi leverer høykvalitets russegensere, bukser og tilbehør med et eksklusivt design. Gjør deg klar for feiringen med stil.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-primary">Se Kolleksjonen</a>
+                <a href="#" class="btn btn-secondary">Design Selv</a>
+            </div>
+        </section>
+
+        <section class="trust-section container">
+            <div class="trust-item">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Rask frakt i hele Norge</span>
+            </div>
+            <div class="trust-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Sikker betaling</span>
+            </div>
+            <div class="trust-item">
+                <i class="fa-solid fa-award"></i>
+                <span>Premium Kvalitet</span>
+            </div>
+        </section>
+
+        <section class="featured container">
+            <h2>Mest Populære</h2>
+            <div class="product-grid" id="featured-products">
+                <!-- Produkter genereres her via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2024 RUSSEMERCH.NO. Alle rettigheter reservert.</p>
+    </footer>
+
+    <!-- Laster inn data og app script -->
+    <script src="data.js"></script>
+    <script src="cart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
