@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produkt - Premium Russemerch</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bruker FontAwesome for ikoner -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo">RUSSEMERCH.NO</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Hjem</a></li>
+                    <li><a href="shop.html">Kolleksjon</a></li>
+                    <li><a href="#">Om Oss</a></li>
+                    <li><a href="#">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="cart">
+                <a href="#" onclick="openCart(); return false;">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Handlekurv Overlay -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Din Handlekurv</h2>
+                <button class="close-cart" onclick="closeCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Produkter injiseres her -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Totalt:</span>
+                    <span id="cart-total-price">0 kr</span>
+                </div>
+                <button class="btn btn-primary btn-checkout">Gå til kasse</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container" style="padding: var(--spacing-lg) 0;">
+        <div id="product-details-container" class="product-details-layout">
+            <!-- Innhold populeres via product.js -->
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2024 RUSSEMERCH.NO. Alle rettigheter reservert.</p>
+    </footer>
+
+    <!-- Laster inn data, handlekurv og product script -->
+    <script src="data.js"></script>
+    <script src="cart.js"></script>
+    <script src="product.js"></script>
+</body>
+</html>

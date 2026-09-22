@@ -1,19 +1,23 @@
-// Sjekk at products er tilgjengelig
-if (typeof products !== 'undefined') {
+// Sjekk at getProducts er tilgjengelig
+if (typeof getProducts === 'function') {
 
     const shopContainer = document.getElementById('shop-products');
     const filterButtons = document.querySelectorAll('.filter-btn');
 
-    // Gjenbruk funksjon for å lage produktkort (samme som i app.js, men nå for shop)
+    // Gjenbruk funksjon for å lage produktkort (oppdatert med linker til produktside)
     function createProductCard(product) {
         return `
             <div class="product-card">
-                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                <a href="product.html?id=${product.id}">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                </a>
                 <div class="product-info">
                     <span class="product-category">${product.category}</span>
-                    <h3 class="product-title">${product.name}</h3>
+                    <a href="product.html?id=${product.id}">
+                        <h3 class="product-title">${product.name}</h3>
+                    </a>
                     <div class="product-price">${product.price} kr</div>
-                    <button class="btn btn-primary" onclick="addToCart(${product.id})">Legg i handlekurv</button>
+                    <button class="btn btn-primary" onclick="window.location.href='product.html?id=${product.id}'">Kjøp / Velg Størrelse</button>
                 </div>
             </div>
         `;
@@ -23,10 +27,11 @@ if (typeof products !== 'undefined') {
     function renderProducts(category = 'all') {
         if (!shopContainer) return;
 
-        let filteredProducts = products;
+        const allProducts = getProducts();
+        let filteredProducts = allProducts;
 
         if (category !== 'all') {
-            filteredProducts = products.filter(p => p.category === category);
+            filteredProducts = allProducts.filter(p => p.category === category);
         }
 
         let html = '';
@@ -65,5 +70,5 @@ if (typeof products !== 'undefined') {
     });
 
 } else {
-    console.error('products-data ble ikke lastet riktig fra data.js');
+    console.error('getProducts-funksjonen ble ikke lastet riktig fra data.js');
 }

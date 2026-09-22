@@ -8,21 +8,32 @@ function saveCart() {
     updateCartUI();
 }
 
-// Funksjon for å legge til produkt i handlekurv
-window.addToCart = function(productId) {
-    const product = products.find(p => p.id === productId);
+// Funksjon for å legge til produkt i handlekurv (støtter nå størrelse)
+window.addToCart = function(productId, size = null) {
+    const allProducts = typeof getProducts === 'function' ? getProducts() : products;
+
+    // Pass på at vi gjør productId til tall hvis den kommer inn som string
+    const id = parseInt(productId, 10);
+    const product = allProducts.find(p => p.id === id);
     if (!product) return;
 
-    const existingItem = cart.find(item => item.id === productId);
+    // Hvis produktet har størrelser, men ingen er valgt, bruk den første (fallback)
+    const selectedSize = size || (product.sizes && product.sizes.length > 0 ? product.sizes[0] : 'One Size');
+
+    // Vi bruker en kombinasjon av ID og størrelse som unik identifikator i kurven
+    const cartItemId = `${id}-${selectedSize}`;
+    const existingItem = cart.find(item => item.cartItemId === cartItemId);
 
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
         cart.push({
+            cartItemId: cartItemId, // Ny unik ID
             id: product.id,
             name: product.name,
-            price: product.price,
+            price: parseInt(product.price, 10),
             imageUrl: product.imageUrl,
+            size: selectedSize, // Lagre valgt størrelse
             quantity: 1
         });
     }
@@ -31,19 +42,19 @@ window.addToCart = function(productId) {
     openCart(); // Åpne handlekurven automatisk når man legger til noe
 };
 
-// Funksjon for å fjerne et helt produkt fra kurven
-window.removeFromCart = function(productId) {
-    cart = cart.filter(item => item.id !== productId);
+// Funksjon for å fjerne et helt produkt fra kurven (krever nå cartItemId)
+window.removeFromCart = function(cartItemId) {
+    cart = cart.filter(item => item.cartItemId !== cartItemId);
     saveCart();
 };
 
-// Funksjon for å endre antall
-window.updateQuantity = function(productId, change) {
-    const item = cart.find(item => item.id === productId);
+// Funksjon for å endre antall (krever nå cartItemId)
+window.updateQuantity = function(cartItemId, change) {
+    const item = cart.find(item => item.cartItemId === cartItemId);
     if (item) {
         item.quantity += change;
         if (item.quantity <= 0) {
-            removeFromCart(productId);
+            removeFromCart(cartItemId);
         } else {
             saveCart();
         }
@@ -94,19 +105,23 @@ function updateCartUI() {
         const itemTotal = item.price * item.quantity;
         totalPrice += itemTotal;
 
+        // Viser valgt størrelse i UI
+        const sizeInfo = item.size ? `<div style="font-size:0.8rem; color:var(--text-secondary);">Størrelse: ${item.size}</div>` : '';
+
         html += `
             <div class="cart-item">
                 <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-info">
                     <div class="cart-item-title">${item.name}</div>
+                    ${sizeInfo}
                     <div class="cart-item-price">${item.price} kr</div>
                     <div class="cart-item-controls">
-                        <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <button class="qty-btn" onclick="updateQuantity('${item.cartItemId}', -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button class="qty-btn" onclick="updateQuantity('${item.cartItemId}', 1)">+</button>
                     </div>
                 </div>
-                <button class="remove-item" onclick="removeFromCart(${item.id})">Fjern</button>
+                <button class="remove-item" onclick="removeFromCart('${item.cartItemId}')">Fjern</button>
             </div>
         `;
     });

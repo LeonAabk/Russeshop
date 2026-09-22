@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Premium Russemerch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo">RUSSEMERCH ADMIN</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Tilbake til butikken</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 style="margin-top: 2rem;">Admin Dashboard</h1>
+
+        <div class="admin-layout">
+
+            <!-- Skjema for å legge til produkt -->
+            <div class="admin-form-container">
+                <h2>Legg til nytt produkt</h2>
+                <br>
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label for="p-name">Tittel</label>
+                        <input type="text" id="p-name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-price">Pris (NOK)</label>
+                        <input type="number" id="p-price" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-category">Kategori</label>
+                        <select id="p-category" class="form-control" required>
+                            <option value="Gensere">Gensere</option>
+                            <option value="Hettegensere">Hettegensere</option>
+                            <option value="Bukser">Bukser</option>
+                            <option value="Jakker">Jakker</option>
+                            <option value="Tilbehør">Tilbehør</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-desc">Beskrivelse</label>
+                        <textarea id="p-desc" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="p-image">Bilde-URL</label>
+                        <input type="url" id="p-image" class="form-control" placeholder="https://..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tilgjengelige Størrelser</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="sizes" value="XS"> XS</label>
+                            <label><input type="checkbox" name="sizes" value="S"> S</label>
+                            <label><input type="checkbox" name="sizes" value="M"> M</label>
+                            <label><input type="checkbox" name="sizes" value="L"> L</label>
+                            <label><input type="checkbox" name="sizes" value="XL"> XL</label>
+                            <label><input type="checkbox" name="sizes" value="One Size"> One Size</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Lagre Produkt</button>
+                </form>
+            </div>
+
+            <!-- Liste over eksisterende produkter -->
+            <div class="admin-list-container">
+                <h2>Alle Produkter</h2>
+                <br>
+                <div id="admin-product-list" class="admin-list">
+                    <!-- Produkter injiseres her -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Laster inn data og admin script -->
+    <script src="data.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
