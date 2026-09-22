@@ -8,21 +8,31 @@ function saveCart() {
     updateCartUI();
 }
 
+// Hjelpefunksjon for å generere en unik id for handlekurv-items
+function getCartItemId(productId, size) {
+    return size ? `${productId}-${size}` : `${productId}`;
+}
+
 // Funksjon for å legge til produkt i handlekurv
-window.addToCart = function(productId) {
-    const product = products.find(p => p.id === productId);
+window.addToCart = function(productId, size = null) {
+    // Bruk getProducts() hvis tilgjengelig, ellers fallback til products
+    const productList = typeof getProducts === 'function' ? getProducts() : products;
+    const product = productList.find(p => p.id === productId);
     if (!product) return;
 
-    const existingItem = cart.find(item => item.id === productId);
+    const cartItemId = getCartItemId(productId, size);
+    const existingItem = cart.find(item => item.cartItemId === cartItemId || (item.id === productId && item.size === size));
 
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
         cart.push({
+            cartItemId: cartItemId, // Unik ID for kombinasjonen
             id: product.id,
             name: product.name,
             price: product.price,
             imageUrl: product.imageUrl,
+            size: size,
             quantity: 1
         });
     }
@@ -32,18 +42,18 @@ window.addToCart = function(productId) {
 };
 
 // Funksjon for å fjerne et helt produkt fra kurven
-window.removeFromCart = function(productId) {
-    cart = cart.filter(item => item.id !== productId);
+window.removeFromCart = function(cartItemId) {
+    cart = cart.filter(item => item.cartItemId !== cartItemId && item.id !== cartItemId);
     saveCart();
 };
 
 // Funksjon for å endre antall
-window.updateQuantity = function(productId, change) {
-    const item = cart.find(item => item.id === productId);
+window.updateQuantity = function(cartItemId, change) {
+    const item = cart.find(item => item.cartItemId === cartItemId || item.id === cartItemId);
     if (item) {
         item.quantity += change;
         if (item.quantity <= 0) {
-            removeFromCart(productId);
+            removeFromCart(item.cartItemId || item.id);
         } else {
             saveCart();
         }
@@ -93,20 +103,22 @@ function updateCartUI() {
     cart.forEach(item => {
         const itemTotal = item.price * item.quantity;
         totalPrice += itemTotal;
+        const sizeText = item.size ? ` (Str: ${item.size})` : '';
+        const idToUse = item.cartItemId ? `'${item.cartItemId}'` : item.id; // Fallback for gamle items
 
         html += `
             <div class="cart-item">
                 <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-info">
-                    <div class="cart-item-title">${item.name}</div>
+                    <div class="cart-item-title">${item.name}${sizeText}</div>
                     <div class="cart-item-price">${item.price} kr</div>
                     <div class="cart-item-controls">
-                        <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <button class="qty-btn" onclick="updateQuantity(${idToUse}, -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button class="qty-btn" onclick="updateQuantity(${idToUse}, 1)">+</button>
                     </div>
                 </div>
-                <button class="remove-item" onclick="removeFromCart(${item.id})">Fjern</button>
+                <button class="remove-item" onclick="removeFromCart(${idToUse})">Fjern</button>
             </div>
         `;
     });
@@ -117,6 +129,16 @@ function updateCartUI() {
 
 // Initialiser når DOM er klar
 document.addEventListener('DOMContentLoaded', () => {
+    // Pass på at alle gamle varer i localStorage får en cartItemId
+    let needsSave = false;
+    cart.forEach(item => {
+        if (!item.cartItemId) {
+            item.cartItemId = getCartItemId(item.id, item.size);
+            needsSave = true;
+        }
+    });
+    if (needsSave) saveCart();
+
     updateCartUI();
 
     // Legg til event listener for å lukke handlekurv ved klikk utenfor sidebar

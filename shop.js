@@ -1,19 +1,24 @@
 // Sjekk at products er tilgjengelig
-if (typeof products !== 'undefined') {
+if (typeof getProducts !== 'undefined' || typeof products !== 'undefined') {
 
+    const productList = typeof getProducts === 'function' ? getProducts() : products;
     const shopContainer = document.getElementById('shop-products');
     const filterButtons = document.querySelectorAll('.filter-btn');
 
-    // Gjenbruk funksjon for å lage produktkort (samme som i app.js, men nå for shop)
+    // Gjenbruk funksjon for å lage produktkort
     function createProductCard(product) {
         return `
             <div class="product-card">
-                <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                <a href="product.html?id=${product.id}">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                </a>
                 <div class="product-info">
                     <span class="product-category">${product.category}</span>
-                    <h3 class="product-title">${product.name}</h3>
+                    <a href="product.html?id=${product.id}">
+                        <h3 class="product-title">${product.name}</h3>
+                    </a>
                     <div class="product-price">${product.price} kr</div>
-                    <button class="btn btn-primary" onclick="addToCart(${product.id})">Legg i handlekurv</button>
+                    <a href="product.html?id=${product.id}" class="btn btn-primary" style="text-align: center; display: block; margin-top: 10px;">Se produkt</a>
                 </div>
             </div>
         `;
@@ -23,10 +28,10 @@ if (typeof products !== 'undefined') {
     function renderProducts(category = 'all') {
         if (!shopContainer) return;
 
-        let filteredProducts = products;
+        let filteredProducts = productList;
 
         if (category !== 'all') {
-            filteredProducts = products.filter(p => p.category === category);
+            filteredProducts = productList.filter(p => p.category === category);
         }
 
         let html = '';

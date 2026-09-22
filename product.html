@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produkt - Russemerch</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo"><a href="index.html">Russemerch</a></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Hjem</a></li>
+                    <li><a href="shop.html">Butikk</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li>
+                        <div class="cart" onclick="openCart()" style="cursor: pointer;">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span id="cart-badge">0</span>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Handlekurv Overlay (Slide-in) -->
+    <div id="cart-overlay" class="cart-overlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h2>Handlekurv</h2>
+                <button class="close-cart" onclick="closeCart()">&times;</button>
+            </div>
+            <div id="cart-items" class="cart-items">
+                <!-- Handlekurv innhold genereres med JS -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Totalt:</span>
+                    <span id="cart-total-price">0 kr</span>
+                </div>
+                <button class="btn btn-primary btn-checkout">Gå til kasse</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Section -->
+    <section class="container" style="padding: var(--spacing-lg) 0;">
+        <div id="product-detail-container" style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg);">
+            <!-- Genereres av JS -->
+            <p>Laster produkt...</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Russemerch. Alle rettigheter reservert.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="cart.js"></script>
+    <script src="product.js"></script>
+</body>
+</html>
